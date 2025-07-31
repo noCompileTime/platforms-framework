@@ -1,0 +1,3 @@
+[submodule "modules/platforms"]
+	path = modules/platforms
+	url = https://github.com/noCompileTime/platforms-module.git
