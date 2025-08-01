@@ -9,7 +9,7 @@ auto main() -> int32_t
 
     const auto factory = core::Platform::create_factory();
 
-    core::WindowManager::instance().init({ { "Platforms Framework", window_size }, { } }, factory);
+    core::WindowManager::instance().init(factory, { { "Platforms Framework", window_size }, { } });
     core::WindowManager::instance().window_events().on_close = [&window_closed]
     {
         window_closed = true;
