@@ -2,7 +2,9 @@
 
 auto main() -> int
 {
-    auto window = core::Platform::create_factory()->create_window();
+    const auto factory = core::Platform::create_factory();
+
+    const auto window  = factory->create_window();
 
     window->create({ }, { });
     window->show();
