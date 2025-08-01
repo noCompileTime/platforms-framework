@@ -1,3 +1,4 @@
+#include <core/platform.hpp>
 #include <core/window_manager.hpp>
 
 auto main() -> int32_t
@@ -6,8 +7,10 @@ auto main() -> int32_t
     core::window_size window_size;
                       window_size.resize(2048, 1024);
 
-    core::WindowManager::instance().init({ { "Platforms Framework", window_size, 0 }, { } });
-    core::WindowManager::instance().events().on_close = [&window_closed]
+    const auto factory = core::Platform::create_factory();
+
+    core::WindowManager::instance().init({ { "Platforms Framework", window_size, 0 }, { } }, factory);
+    core::WindowManager::instance().window_events().on_close = [&window_closed]
     {
         window_closed = true;
     };
