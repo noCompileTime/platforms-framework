@@ -67,9 +67,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
         case GLFW_KEY_V:
             if (mods == MODIFIER)
             {
-                const char* string;
-
-                string = glfwGetClipboardString(NULL);
+                const char* string = glfwGetClipboardString(NULL);
                 if (string)
                     printf("Clipboard contains \"%s\"\n", string);
                 else
@@ -91,7 +89,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(int argc, char** argv)
 {
     int ch;
-    GLFWwindow* window;
 
     while ((ch = getopt(argc, argv, "h")) != -1)
     {
@@ -115,7 +112,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
 
-    window = glfwCreateWindow(200, 200, "Clipboard Test", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(200, 200, "Clipboard Test", NULL, NULL);
     if (!window)
     {
         glfwTerminate();

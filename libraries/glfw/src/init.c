@@ -188,8 +188,6 @@ char** _glfwParseUriList(char* text, int* count)
 
     while ((line = strtok(text, "\r\n")))
     {
-        char* path;
-
         text = NULL;
 
         if (line[0] == '#')
@@ -205,8 +203,8 @@ char** _glfwParseUriList(char* text, int* count)
 
         (*count)++;
 
-        path = _glfw_calloc(strlen(line) + 1, 1);
-        paths = _glfw_realloc(paths, *count * sizeof(char*));
+        char* path        = _glfw_calloc(strlen(line) + 1, 1);
+        paths             = _glfw_realloc(paths, *count * sizeof(char*));
         paths[*count - 1] = path;
 
         while (*line)
@@ -250,25 +248,19 @@ void* _glfw_calloc(size_t count, size_t size)
 {
     if (count && size)
     {
-        void* block;
-
         if (count > SIZE_MAX / size)
         {
             _glfwInputError(GLFW_INVALID_VALUE, "Allocation size overflow");
             return NULL;
         }
 
-        block = _glfw.allocator.allocate(count * size, _glfw.allocator.user);
+        void* block = _glfw.allocator.allocate(count * size, _glfw.allocator.user);
         if (block)
             return memset(block, 0, count * size);
-        else
-        {
-            _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
-            return NULL;
-        }
-    }
-    else
+        _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
         return NULL;
+    }
+    return NULL;
 }
 
 void* _glfw_realloc(void* block, size_t size)
@@ -278,19 +270,17 @@ void* _glfw_realloc(void* block, size_t size)
         void* resized = _glfw.allocator.reallocate(block, size, _glfw.allocator.user);
         if (resized)
             return resized;
-        else
-        {
-            _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
-            return NULL;
-        }
+        _glfwInputError(GLFW_OUT_OF_MEMORY, NULL);
+        return NULL;
     }
-    else if (block)
+
+    if (block)
     {
         _glfw_free(block);
         return NULL;
     }
-    else
-        return _glfw_calloc(1, size);
+
+    return _glfw_calloc(1, size);
 }
 
 void _glfw_free(void* block)

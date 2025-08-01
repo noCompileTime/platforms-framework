@@ -181,19 +181,16 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 // Chooses the framebuffer config that best matches the desired one
 //
 const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
-                                         const _GLFWfbconfig* alternatives,
-                                         unsigned int count)
+                                         const _GLFWfbconfig* alternatives, const unsigned int count)
 {
-    unsigned int i;
-    unsigned int missing, leastMissing = UINT_MAX;
-    unsigned int colorDiff, leastColorDiff = UINT_MAX;
-    unsigned int extraDiff, leastExtraDiff = UINT_MAX;
-    const _GLFWfbconfig* current;
-    const _GLFWfbconfig* closest = NULL;
+    unsigned int         missing,   leastMissing   = UINT_MAX;
+    unsigned int         colorDiff, leastColorDiff = UINT_MAX;
+    unsigned int         extraDiff, leastExtraDiff = UINT_MAX;
+    const _GLFWfbconfig* closest                   = NULL;
 
-    for (i = 0;  i < count;  i++)
+    for (unsigned int i = 0;  i < count;  i++)
     {
-        current = alternatives + i;
+        const _GLFWfbconfig* current = alternatives + i;
 
         if (desired->stereo > 0 && current->stereo == 0)
         {
@@ -345,8 +342,6 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
 GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
                                     const _GLFWctxconfig* ctxconfig)
 {
-    int i;
-    _GLFWwindow* previous;
     const char* version;
     const char* prefixes[] =
     {
@@ -359,7 +354,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
     window->context.source = ctxconfig->source;
     window->context.client = GLFW_OPENGL_API;
 
-    previous = _glfwPlatformGetTls(&_glfw.contextSlot);
+    _GLFWwindow* previous = _glfwPlatformGetTls(&_glfw.contextSlot);
     glfwMakeContextCurrent((GLFWwindow*) window);
     if (_glfwPlatformGetTls(&_glfw.contextSlot) != window)
         return GLFW_FALSE;
@@ -393,7 +388,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
         return GLFW_FALSE;
     }
 
-    for (i = 0;  prefixes[i];  i++)
+    for (int i = 0;  prefixes[i];  i++)
     {
         const size_t length = strlen(prefixes[i]);
 

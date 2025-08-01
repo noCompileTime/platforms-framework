@@ -94,15 +94,15 @@ static float star(int x, int y, float t)
     return (float) fmax(0.f, fmin(1.f, i * salpha * 0.2f + salpha * xalpha * yalpha));
 }
 
-static GLFWcursor* create_cursor_frame(float t)
+static GLFWcursor* create_cursor_frame(const float t)
 {
-    int i = 0, x, y;
-    unsigned char buffer[64 * 64 * 4];
+    int             i = 0;
+    unsigned char   buffer[64 * 64 * 4];
     const GLFWimage image = { 64, 64, buffer };
 
-    for (y = 0;  y < image.width;  y++)
+    for (int y = 0;  y < image.width;  y++)
     {
-        for (x = 0;  x < image.height;  x++)
+        for (int x = 0;  x < image.height;  x++)
         {
             buffer[i++] = 255;
             buffer[i++] = 255;

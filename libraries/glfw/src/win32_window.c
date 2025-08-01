@@ -127,7 +127,7 @@ static HICON createIcon(const GLFWimage* image, int xhot, int yhot, GLFWbool ico
                              DIB_RGB_COLORS,
                              (void**) &target,
                              NULL,
-                             (DWORD) 0);
+                             0);
     ReleaseDC(NULL, dc);
 
     if (!color)
@@ -1253,7 +1253,7 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
                 _glfw_free(buffer);
             }
 
-            _glfwInputDrop(window, count, (const char**) paths);
+            _glfwInputDrop(window, count, paths);
 
             for (i = 0;  i < count;  i++)
                 _glfw_free(paths[i]);
@@ -2278,7 +2278,7 @@ GLFWbool _glfwCreateCursorWin32(_GLFWcursor* cursor,
                                 const GLFWimage* image,
                                 int xhot, int yhot)
 {
-    cursor->win32.handle = (HCURSOR) createIcon(image, xhot, yhot, GLFW_FALSE);
+    cursor->win32.handle = createIcon(image, xhot, yhot, GLFW_FALSE);
     if (!cursor->win32.handle)
         return GLFW_FALSE;
 
@@ -2342,7 +2342,7 @@ GLFWbool _glfwCreateStandardCursorWin32(_GLFWcursor* cursor, int shape)
 void _glfwDestroyCursorWin32(_GLFWcursor* cursor)
 {
     if (cursor->win32.handle)
-        DestroyIcon((HICON) cursor->win32.handle);
+        DestroyIcon(cursor->win32.handle);
 }
 
 void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor)
@@ -2353,15 +2353,13 @@ void _glfwSetCursorWin32(_GLFWwindow* window, _GLFWcursor* cursor)
 
 void _glfwSetClipboardStringWin32(const char* string)
 {
-    int characterCount, tries = 0;
-    HANDLE object;
-    WCHAR* buffer;
+    int tries = 0;
 
-    characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
+    const int characterCount = MultiByteToWideChar(CP_UTF8, 0, string, -1, NULL, 0);
     if (!characterCount)
         return;
 
-    object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
+    HANDLE object = GlobalAlloc(GMEM_MOVEABLE, characterCount * sizeof(WCHAR));
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2369,7 +2367,7 @@ void _glfwSetClipboardStringWin32(const char* string)
         return;
     }
 
-    buffer = GlobalLock(object);
+    WCHAR* buffer = GlobalLock(object);
     if (!buffer)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
@@ -2404,8 +2402,6 @@ void _glfwSetClipboardStringWin32(const char* string)
 
 const char* _glfwGetClipboardStringWin32(void)
 {
-    HANDLE object;
-    WCHAR* buffer;
     int tries = 0;
 
     // NOTE: Retry clipboard opening a few times as some other application may have it
@@ -2423,7 +2419,7 @@ const char* _glfwGetClipboardStringWin32(void)
         }
     }
 
-    object = GetClipboardData(CF_UNICODETEXT);
+    HANDLE object = GetClipboardData(CF_UNICODETEXT);
     if (!object)
     {
         _glfwInputErrorWin32(GLFW_FORMAT_UNAVAILABLE,
@@ -2432,7 +2428,7 @@ const char* _glfwGetClipboardStringWin32(void)
         return NULL;
     }
 
-    buffer = GlobalLock(object);
+    WCHAR* buffer = GlobalLock(object);
     if (!buffer)
     {
         _glfwInputErrorWin32(GLFW_PLATFORM_ERROR,
