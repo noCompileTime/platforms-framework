@@ -1,15 +1,25 @@
-#include <core/platform.hpp>
+#include <core/window_manager.hpp>
 
-auto main() -> int
+auto main() -> int32_t
 {
-    const auto factory = core::Platform::create_factory();
+                 auto window_closed { false };
+    core::window_size window_size;
+                      window_size.resize(2048, 1024);
 
-    const auto window  = factory->create_window();
+    core::WindowManager::instance().init({ { "Platforms Framework", window_size, 0 }, { } });
+    core::WindowManager::instance().events().on_close = [&window_closed]
+    {
+        window_closed = true;
+    };
 
-    window->create({ }, { });
-    window->show();
+    core::WindowManager::instance().window().show();
 
-    window->destroy();
+    while (!window_closed)
+    {
+        core::WindowManager::instance().update();
+    }
+
+    core::WindowManager::instance().release();
 
     return 0;
 }
