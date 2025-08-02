@@ -34,6 +34,7 @@ auto main() -> int32_t
         window_closed = true;
     };
 
+    core::WindowManager::instance().window_context().sync();
     core::WindowManager::instance().window().show();
 
     opengl::Functions::init();
