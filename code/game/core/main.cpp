@@ -1,6 +1,11 @@
 #include <core/platform.hpp>
 #include <core/window_manager.hpp>
 
+#include <opengl/commands.hpp>
+#include <opengl/functions.hpp>
+
+#include <opengl/constants/commands.hpp>
+
 auto main() -> int32_t
 {
                  auto window_closed { false };
@@ -31,9 +36,15 @@ auto main() -> int32_t
 
     core::WindowManager::instance().window().show();
 
+    opengl::Functions::init();
+
+    opengl::Commands::clear(0.0f, 1.0f, 0.0f);
+
     while (!window_closed)
     {
         core::WindowManager::instance().update();
+
+        opengl::Commands::clear(opengl::constants::color_buffer);
 
         core::WindowManager::instance().window_context().present();
     }
