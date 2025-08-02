@@ -9,6 +9,20 @@ auto main() -> int32_t
 
     const auto factory = core::Platform::create_factory();
 
+    const auto    window = factory->create_window();
+    const auto   context = factory->create_window_context();
+    const auto functions = factory->create_platform_functions();
+
+    constexpr core::config::window config { "window_core_context", { } };
+
+    window->create(config, { });
+    context->create(window->handle());
+
+    functions->init();
+
+    context->destroy();
+    window->destroy();
+
     core::WindowManager::instance().init(factory, { { "Platforms Framework", window_size }, { } });
     core::WindowManager::instance().window_events().on_close = [&window_closed]
     {

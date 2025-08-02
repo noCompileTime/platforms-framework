@@ -1,4 +1,4 @@
 #=======================================================================================================================
-target_link_libraries(${PROJECT_NAME} PRIVATE platforms-module)
+target_link_libraries(${PROJECT_NAME} PRIVATE platforms-module graphics-module)
        target_sources(${PROJECT_NAME} PRIVATE main.cpp)
 #=======================================================================================================================

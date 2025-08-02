@@ -2457,52 +2457,6 @@ GLFWAPI const char* glfwGetVersionString(void);
  */
 GLFWAPI int glfwGetError(const char** description);
 
-/*! @brief Sets the error callback.
- *
- *  This function sets the error callback, which is called with an error code
- *  and a human-readable description each time a GLFW error occurs.
- *
- *  The error code is set before the callback is called.  Calling @ref
- *  glfwGetError from the error callback will return the same value as the error
- *  code argument.
- *
- *  The error callback is called on the thread where the error occurred.  If you
- *  are using GLFW from multiple threads, your error callback needs to be
- *  written accordingly.
- *
- *  Because the description string may have been generated specifically for that
- *  error, it is not guaranteed to be valid after the callback has returned.  If
- *  you wish to use it after the callback returns, you need to make a copy.
- *
- *  Once set, the error callback remains set even after the library has been
- *  terminated.
- *
- *  @param[in] callback The new callback, or `NULL` to remove the currently set
- *  callback.
- *  @return The previously set callback, or `NULL` if no callback was set.
- *
- *  @callback_signature
- *  @code
- *  void callback_name(int error_code, const char* description)
- *  @endcode
- *  For more information about the callback parameters, see the
- *  [callback pointer type](@ref GLFWerrorfun).
- *
- *  @errors None.
- *
- *  @remark This function may be called before @ref glfwInit.
- *
- *  @thread_safety This function must only be called from the main thread.
- *
- *  @sa @ref error_handling
- *  @sa @ref glfwGetError
- *
- *  @since Added in version 3.0.
- *
- *  @ingroup init
- */
-GLFWAPI GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun callback);
-
 /*! @brief Returns the currently selected platform.
  *
  *  This function returns the platform that was selected during initialization.  The
@@ -2752,56 +2706,6 @@ GLFWAPI void glfwGetMonitorContentScale(GLFWmonitor* monitor, float* xscale, flo
  *  @ingroup monitor
  */
 GLFWAPI const char* glfwGetMonitorName(GLFWmonitor* monitor);
-
-/*! @brief Sets the user pointer of the specified monitor.
- *
- *  This function sets the user-defined pointer of the specified monitor.  The
- *  current value is retained until the monitor is disconnected.  The initial
- *  value is `NULL`.
- *
- *  This function may be called from the monitor callback, even for a monitor
- *  that is being disconnected.
- *
- *  @param[in] monitor The monitor whose pointer to set.
- *  @param[in] pointer The new value.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref monitor_userptr
- *  @sa @ref glfwGetMonitorUserPointer
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup monitor
- */
-GLFWAPI void glfwSetMonitorUserPointer(GLFWmonitor* monitor, void* pointer);
-
-/*! @brief Returns the user pointer of the specified monitor.
- *
- *  This function returns the current value of the user-defined pointer of the
- *  specified monitor.  The initial value is `NULL`.
- *
- *  This function may be called from the monitor callback, even for a monitor
- *  that is being disconnected.
- *
- *  @param[in] monitor The monitor whose pointer to return.
- *
- *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED.
- *
- *  @thread_safety This function may be called from any thread.  Access is not
- *  synchronized.
- *
- *  @sa @ref monitor_userptr
- *  @sa @ref glfwSetMonitorUserPointer
- *
- *  @since Added in version 3.3.
- *
- *  @ingroup monitor
- */
-GLFWAPI void* glfwGetMonitorUserPointer(GLFWmonitor* monitor);
 
 /*! @brief Sets the monitor configuration callback.
  *
