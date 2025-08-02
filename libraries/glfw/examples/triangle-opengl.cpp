@@ -120,7 +120,7 @@ auto main() -> int
     glAttachShader(program, fragment_shader);
     glLinkProgram(program);
 
-    const auto mvp_location = glGetUniformLocation(program, "MVP");
+    const auto mvp_location  = glGetUniformLocation(program, "MVP");
     const auto vpos_location = glGetAttribLocation(program, "vPos");
     const auto vcol_location = glGetAttribLocation(program, "vCol");
 
@@ -138,7 +138,7 @@ auto main() -> int
         glfwGetFramebufferSize(window, &width, &height);
         const auto ratio = static_cast<float>(width) / static_cast<float>(height);
 
-        glViewport(0, 0, width, height);
+        opengl::Commands::viewport(0, 0, width, height);
 
         opengl::Commands::clear(opengl::constants::color_buffer);
 
@@ -151,7 +151,8 @@ auto main() -> int
         glUseProgram(program);
         glUniformMatrix4fv(mvp_location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(&mvp));
         glBindVertexArray(vertex_array);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        opengl::Commands::draw_vertices(opengl::constants::triangles, 3);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
