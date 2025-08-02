@@ -11,28 +11,24 @@ if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-if (WIN32)
-    set(ICON glfw.rc)
-elseif (APPLE)
-    set(ICON glfw.icns)
-endif()
-
 set(GLAD_GL "${GLFW_SOURCE_DIR}/deps/glad/gl.h")
 set(GETOPT "${GLFW_SOURCE_DIR}/deps/getopt.h"
            "${GLFW_SOURCE_DIR}/deps/getopt.c")
 set(TINYCTHREAD "${GLFW_SOURCE_DIR}/deps/tinycthread.h"
                 "${GLFW_SOURCE_DIR}/deps/tinycthread.c")
 
-add_executable(boing WIN32 MACOSX_BUNDLE boing.c ${ICON} ${GLAD_GL})
-add_executable(gears WIN32 MACOSX_BUNDLE gears.c ${ICON} ${GLAD_GL})
-add_executable(heightmap WIN32 MACOSX_BUNDLE heightmap.c ${ICON} ${GLAD_GL})
-add_executable(offscreen offscreen.c ${ICON} ${GLAD_GL})
-add_executable(particles WIN32 MACOSX_BUNDLE particles.c ${ICON} ${TINYCTHREAD} ${GETOPT} ${GLAD_GL})
-add_executable(sharing WIN32 MACOSX_BUNDLE sharing.c ${ICON} ${GLAD_GL})
-add_executable(splitview WIN32 MACOSX_BUNDLE splitview.c ${ICON} ${GLAD_GL})
-add_executable(triangle-opengl WIN32 MACOSX_BUNDLE triangle-opengl.c ${ICON} ${GLAD_GL})
-add_executable(wave WIN32 MACOSX_BUNDLE wave.c ${ICON} ${GLAD_GL})
-add_executable(windows WIN32 MACOSX_BUNDLE windows.c ${ICON} ${GLAD_GL})
+add_executable(boing WIN32 MACOSX_BUNDLE boing.c ${GLAD_GL})
+add_executable(gears WIN32 MACOSX_BUNDLE gears.c ${GLAD_GL})
+add_executable(heightmap WIN32 MACOSX_BUNDLE heightmap.c ${GLAD_GL})
+add_executable(offscreen offscreen.c ${GLAD_GL})
+add_executable(particles WIN32 MACOSX_BUNDLE particles.c ${TINYCTHREAD} ${GETOPT} ${GLAD_GL})
+add_executable(sharing WIN32 MACOSX_BUNDLE sharing.c ${GLAD_GL})
+add_executable(splitview WIN32 MACOSX_BUNDLE splitview.c ${GLAD_GL})
+add_executable(triangle-opengl WIN32 MACOSX_BUNDLE triangle-opengl.cpp ${GLAD_GL})
+add_executable(wave WIN32 MACOSX_BUNDLE wave.c ${GLAD_GL})
+add_executable(windows WIN32 MACOSX_BUNDLE windows.c ${GLAD_GL})
+
+target_link_libraries(triangle-opengl PRIVATE graphics-module)
 
 target_link_libraries(particles Threads::Threads)
 
