@@ -32,19 +32,14 @@
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
-#include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main()
 {
-    GLFWwindow* window;
-
-    glfwSetErrorCallback(error_callback);
-
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -65,4 +60,3 @@ int main(void)
     glfwTerminate();
     exit(EXIT_SUCCESS);
 }
-

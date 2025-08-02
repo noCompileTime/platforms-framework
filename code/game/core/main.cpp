@@ -34,6 +34,8 @@ auto main() -> int32_t
     while (!window_closed)
     {
         core::WindowManager::instance().update();
+
+        core::WindowManager::instance().window_context().present();
     }
 
     core::WindowManager::instance().release();
