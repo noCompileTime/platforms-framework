@@ -6,11 +6,6 @@ if (MATH_LIBRARY)
     link_libraries("${MATH_LIBRARY}")
 endif()
 
-# Workaround for the MS CRT deprecating parts of the standard library
-if (MSVC OR CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
-
 set(GLAD_GL "${GLFW_SOURCE_DIR}/deps/glad/gl.h")
 set(GLAD_VULKAN "${GLFW_SOURCE_DIR}/deps/glad/vulkan.h")
 set(GETOPT "${GLFW_SOURCE_DIR}/deps/getopt.h"
@@ -36,7 +31,6 @@ add_executable(joysticks WIN32 MACOSX_BUNDLE joysticks.c ${GLAD_GL})
 add_executable(tearing WIN32 MACOSX_BUNDLE tearing.c ${GLAD_GL})
 add_executable(threads WIN32 MACOSX_BUNDLE threads.c ${TINYCTHREAD} ${GLAD_GL})
 add_executable(timeout WIN32 MACOSX_BUNDLE timeout.c ${GLAD_GL})
-add_executable(title WIN32 MACOSX_BUNDLE title.c ${GLAD_GL})
 add_executable(triangle-vulkan WIN32 triangle-vulkan.c ${GLAD_VULKAN})
 add_executable(window WIN32 MACOSX_BUNDLE window.c ${GLAD_GL})
 
@@ -47,21 +41,10 @@ if (RT_LIBRARY)
     target_link_libraries(threads "${RT_LIBRARY}")
 endif()
 
+add_executable(title title.cpp)
 target_link_libraries(title PRIVATE graphics-module)
 
 set(GUI_ONLY_BINARIES empty gamma icon inputlag joysticks tearing threads timeout title triangle-vulkan window)
 set(CONSOLE_BINARIES allocator clipboard events msaa glfwinfo iconify monitors reopen cursor)
 
-set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES
-                      C_STANDARD 99
-                      FOLDER "GLFW3/Tests")
-
-if (MSVC)
-    # Tell MSVC to use main instead of WinMain
-    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
-                          LINK_FLAGS "/ENTRY:mainCRTStartup")
-elseif (CMAKE_C_SIMULATE_ID STREQUAL "MSVC")
-    # Tell Clang using MS CRT to use main instead of WinMain
-    set_target_properties(${GUI_ONLY_BINARIES} PROPERTIES
-                          LINK_FLAGS "-Wl,/entry:mainCRTStartup")
-endif()
+set_target_properties(${GUI_ONLY_BINARIES} ${CONSOLE_BINARIES} PROPERTIES C_STANDARD 99 FOLDER "GLFW3/Tests")

@@ -27,19 +27,25 @@
 //
 //========================================================================
 
-#define GLAD_GL_IMPLEMENTATION
-#include <glad/gl.h>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 
 #include <stdlib.h>
 
-int main()
+#include <opengl/commands.hpp>
+#include <opengl/functions.hpp>
+
+#include <opengl/constants/commands.hpp>
+
+auto main() -> int
 {
     if (!glfwInit())
+    {
         exit(EXIT_FAILURE);
+    }
 
-    GLFWwindow* window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", NULL, NULL);
+    const auto window = glfwCreateWindow(400, 400, "English 日本語 русский язык 官話", nullptr, nullptr);
+
     if (!window)
     {
         glfwTerminate();
@@ -47,12 +53,14 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
-    gladLoadGL(glfwGetProcAddress);
     glfwSwapInterval(1);
+
+    opengl::Functions::init();
 
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        opengl::Commands::clear(opengl::constants::color_buffer);
+
         glfwSwapBuffers(window);
         glfwWaitEvents();
     }
